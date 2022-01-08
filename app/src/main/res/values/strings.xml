@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Android Academy</string>
+
+    <string name="back">Back</string>
+
+    <!--  activity_movie_details  -->
+
+    <string name="storyline">Storyline</string>
+    <string name="cast">Cast</string>
+    <string name="reviews_count">%d reviews</string>
 </resources>
