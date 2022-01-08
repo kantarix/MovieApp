@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="space_1x">2dp</dimen>
+    <dimen name="space_2x">4dp</dimen>
+    <dimen name="space_3x">8dp</dimen>
+    <dimen name="space_4x">16dp</dimen>
+    <dimen name="space_5x">32dp</dimen>
+
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_40">40sp</dimen>
 </resources>

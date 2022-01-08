@@ -1,4 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="corner_size_8_percent">
+        <item name="cornerSize">8%</item>
+    </style>
+
+    <style name="back_button">
+        <item name="android:text">@string/back</item>
+        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:textColor">@color/white_50</item>
+    </style>
+
+    <!--  activity_movie_details  -->
+
+    <style name="movie_details_block_title">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/gallery</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_details_movie_title">
+        <item name="android:textSize">@dimen/text_40</item>
+        <item name="android:textColor">@color/gallery</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_details_genres">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/radical_red</item>
+    </style>
+
+    <style name="movie_age_restriction">
+        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_details_reviews_count">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/storm_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="movie_details_storyline">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/white_75</item>
+    </style>
+
+    <style name="movie_details_actor_name">
+        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:textColor">@color/alto</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
