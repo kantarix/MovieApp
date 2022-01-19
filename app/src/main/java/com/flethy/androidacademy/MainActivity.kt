@@ -1,19 +1,19 @@
 package com.flethy.androidacademy
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        moveToMovieDetailsActivity()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.persistent_container, FragmentMoviesList.newInstance(), "FragmentMoviesList")
+                .commit()
+        }
     }
 
-    private fun moveToMovieDetailsActivity() {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        startActivity(intent)
-    }
+
 }
