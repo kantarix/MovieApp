@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidAcademy">
         <activity
-            android:name=".MovieDetailsActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

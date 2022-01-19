@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="corner_size_3_percent">
+        <item name="cornerSize">3%</item>
+    </style>
+
     <style name="corner_size_8_percent">
         <item name="cornerSize">8%</item>
     </style>
@@ -11,7 +15,7 @@
         <item name="android:textColor">@color/white_50</item>
     </style>
 
-    <!--  activity_movie_details  -->
+    <!--  fragment_movies_details  -->
 
     <style name="movie_details_block_title">
         <item name="android:textSize">@dimen/text_14</item>
@@ -53,4 +57,38 @@
         <item name="android:textColor">@color/alto</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!--  fragment_movies_list  -->
+
+    <style name="movie_list_location_title">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_list_genres">
+        <item name="android:textSize">@dimen/text_9</item>
+        <item name="android:textColor">@color/radical_red</item>
+    </style>
+
+    <style name="movie_list_reviews_count">
+        <item name="android:textSize">@dimen/text_9</item>
+        <item name="android:textColor">@color/storm_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="movie_list_movie_title">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/gallery</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_list_duration">
+        <item name="android:textSize">@dimen/text_9</item>
+        <item name="android:textColor">@color/scarpa_flow</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
 </resources>
