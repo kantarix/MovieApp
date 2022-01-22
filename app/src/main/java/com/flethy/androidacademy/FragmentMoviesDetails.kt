@@ -17,9 +17,7 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     companion object {
-        fun newInstance(): FragmentMoviesDetails {
-            return FragmentMoviesDetails()
-        }
+        fun newInstance() = FragmentMoviesDetails()
     }
 
 }

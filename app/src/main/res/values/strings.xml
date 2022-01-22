@@ -4,13 +4,13 @@
     <string name="back">Back</string>
 
     <!--  fragment_movies_details  -->
-
     <string name="storyline">Storyline</string>
     <string name="cast">Cast</string>
     <string name="reviews_count">%d reviews</string>
+    <!--  fragment_movies_details  -->
 
     <!--  fragment_movies_list  -->
-
     <string name="movies_list">Movies list</string>
     <string name="duration">%d min</string>
+    <!--  fragment_movies_list  -->
 </resources>

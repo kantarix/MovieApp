@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="space_1x">2dp</dimen>
-    <dimen name="space_2x">4dp</dimen>
-    <dimen name="space_3x">8dp</dimen>
-    <dimen name="space_4x">16dp</dimen>
-    <dimen name="space_5x">32dp</dimen>
-    <dimen name="space_6x">64dp</dimen>
+    <!--  fragment_movies_details  -->
+    <dimen name="fragment_movies_details_main_padding">@dimen/space_16</dimen>
+    <dimen name="fragment_movies_details_stars_margin">@dimen/space_2</dimen>
+    <dimen name="fragment_movies_details_actors_margin">@dimen/space_8</dimen>
+    <dimen name="fragment_movies_details_actors_caption_margin">@dimen/space_4</dimen>
+    <!--  fragment_movies_details  -->
+
+    <!--  fragment_movies_list  -->
+    <dimen name="fragment_movies_list_main_padding">@dimen/space_16</dimen>
+    <dimen name="fragment_movies_list_logo_margin">@dimen/space_2</dimen>
+    <dimen name="fragment_movies_list_logo_inner_margin">@dimen/space_8</dimen>
+    <dimen name="fragment_movies_list_age_restriction_size">@dimen/space_24</dimen>
+    <dimen name="fragment_movies_list_stars_margin">@dimen/space_2</dimen>
+    <dimen name="fragment_movies_list_stars_width">@dimen/space_10</dimen>
+    <!--  fragment_movies_list  -->
+    
+    <dimen name="space_2">2dp</dimen>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+    <dimen name="space_64">64dp</dimen>
 
     <dimen name="space_10">10dp</dimen>
     <dimen name="space_24">24dp</dimen>

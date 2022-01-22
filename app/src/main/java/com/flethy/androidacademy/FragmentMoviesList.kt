@@ -31,9 +31,7 @@ class FragmentMoviesList : Fragment() {
     }
 
     companion object {
-        fun newInstance(): FragmentMoviesList {
-            return FragmentMoviesList()
-        }
+        fun newInstance() = FragmentMoviesList()
     }
 
 }

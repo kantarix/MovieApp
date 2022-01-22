@@ -16,7 +16,6 @@
     </style>
 
     <!--  fragment_movies_details  -->
-
     <style name="movie_details_block_title">
         <item name="android:textSize">@dimen/text_14</item>
         <item name="android:textColor">@color/gallery</item>
@@ -57,9 +56,9 @@
         <item name="android:textColor">@color/alto</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <!--  fragment_movies_details  -->
 
     <!--  fragment_movies_list  -->
-
     <style name="movie_list_location_title">
         <item name="android:textSize">@dimen/text_14</item>
         <item name="android:textColor">@color/white</item>
@@ -90,5 +89,6 @@
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
     </style>
+    <!--  fragment_movies_list  -->
 
 </resources>
