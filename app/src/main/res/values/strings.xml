@@ -6,6 +6,7 @@
     <!--  fragment_movies_details  -->
     <string name="storyline">Storyline</string>
     <string name="cast">Cast</string>
+    <string name="age_restriction">%d+</string>
     <string name="reviews_count">%d reviews</string>
     <!--  fragment_movies_details  -->
 
