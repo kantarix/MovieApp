@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="corner_size_3_percent">
-        <item name="cornerSize">3%</item>
+    <style name="corner_size_8">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/space_8</item>
     </style>
 
-    <style name="corner_size_8_percent">
-        <item name="cornerSize">8%</item>
+    <style name="corner_size_4">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/space_8</item>
     </style>
 
     <style name="back_button">

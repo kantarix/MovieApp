@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <integer name="rv_movies_columns">2</integer>
+
     <!--  fragment_movies_details  -->
     <dimen name="fragment_movies_details_main_padding">@dimen/space_16</dimen>
     <dimen name="fragment_movies_details_stars_margin">@dimen/space_2</dimen>
-    <dimen name="fragment_movies_details_actors_margin">@dimen/space_8</dimen>
+    <dimen name="fragment_movies_details_actors_margin">@dimen/space_4</dimen>
     <dimen name="fragment_movies_details_actors_caption_margin">@dimen/space_4</dimen>
     <!--  fragment_movies_details  -->
 
     <!--  fragment_movies_list  -->
     <dimen name="fragment_movies_list_main_padding">@dimen/space_16</dimen>
-    <dimen name="fragment_movies_list_logo_margin">@dimen/space_2</dimen>
-    <dimen name="fragment_movies_list_logo_inner_margin">@dimen/space_8</dimen>
-    <dimen name="fragment_movies_list_age_restriction_size">@dimen/space_24</dimen>
-    <dimen name="fragment_movies_list_stars_margin">@dimen/space_2</dimen>
-    <dimen name="fragment_movies_list_stars_width">@dimen/space_10</dimen>
+    <dimen name="fragment_movies_list_movies_margin">@dimen/space_4</dimen>
+    <dimen name="fragment_movies_list_margin_rv_elements">@dimen/space_10</dimen>
     <!--  fragment_movies_list  -->
-    
+
+    <!--  view_holder_movie  -->
+    <dimen name="view_holder_movie_logo_margin">@dimen/space_2</dimen>
+    <dimen name="view_holder_movie_logo_inner_margin">@dimen/space_8</dimen>
+    <dimen name="view_holder_movie_age_restriction_size">@dimen/space_24</dimen>
+    <dimen name="view_holder_movie_stars_margin">@dimen/space_2</dimen>
+    <dimen name="view_holder_movie_stars_width">@dimen/space_10</dimen>
+    <!--  view_holder_movie  -->
+
+    <dimen name="space_1">1dp</dimen>
     <dimen name="space_2">2dp</dimen>
     <dimen name="space_4">4dp</dimen>
+    <dimen name="space_5">5dp</dimen>
     <dimen name="space_8">8dp</dimen>
-    <dimen name="space_16">16dp</dimen>
-    <dimen name="space_32">32dp</dimen>
-    <dimen name="space_64">64dp</dimen>
-
     <dimen name="space_10">10dp</dimen>
+    <dimen name="space_16">16dp</dimen>
     <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
     <dimen name="space_48">48dp</dimen>
+    <dimen name="space_64">64dp</dimen>
 
     <dimen name="text_9">9sp</dimen>
     <dimen name="text_12">12sp</dimen>
