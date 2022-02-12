@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.flethy.androidacademy.data.JsonMovieRepository
 import com.flethy.androidacademy.data.models.Movie
-import com.flethy.androidacademy.domain.MoviesDataSource
+import kotlinx.coroutines.*
 
 class FragmentMoviesList() : Fragment() {
 
-    private lateinit var adapter: MoviesAdapter
+    private var coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
+    private lateinit var moviesAdapter: MoviesAdapter
+
+    var rvMovies: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,12 +28,19 @@ class FragmentMoviesList() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val rvMovies: RecyclerView = view.findViewById(R.id.rv_movies_list)
-        adapter = MoviesAdapter(movieClickListener)
+        findViews(view)
+
+    }
+
+    private fun findViews(view: View) {
+        rvMovies = view.findViewById(R.id.rv_movies_list)
+        moviesAdapter = MoviesAdapter(movieClickListener)
         val columnsCount = resources.getInteger(R.integer.rv_movies_columns)
-        rvMovies.layoutManager = GridLayoutManager(requireContext(), columnsCount)
-        rvMovies.adapter = adapter
-        rvMovies.setHasFixedSize(true)
+        rvMovies?.apply {
+            layoutManager = GridLayoutManager(requireContext(), columnsCount)
+            adapter = moviesAdapter
+            setHasFixedSize(true)
+        }
     }
 
     override fun onStart() {
@@ -36,8 +48,16 @@ class FragmentMoviesList() : Fragment() {
         updateData()
     }
 
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
+    }
+
     private fun updateData() {
-        adapter.submitList(MoviesDataSource().getMovies())
+        coroutineScope.launch {
+            val moviesList = JsonMovieRepository(requireContext()).loadMovies()
+            moviesAdapter.submitList(moviesList)
+        }
     }
 
     companion object {

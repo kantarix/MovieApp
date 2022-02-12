@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flethy.androidacademy.data.models.Movie
 import com.google.android.material.imageview.ShapeableImageView
-import kotlin.math.roundToInt
 
 class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : androidx.recyclerview.widget.ListAdapter<Movie, MoviesAdapter.MovieViewHolder>(MoviesCallback()) {
 
@@ -44,14 +43,14 @@ class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : andr
         fun onBind(movie: Movie, clickListener: OnMovieClickListener) {
             title.text = movie.title
             Glide.with(itemView.context)
-                .load(movie.logo)
+                .load(movie.imageUrl)
                 .into(logo)
-            ageRestriction.text = itemView.context.getString(R.string.age_restriction, movie.ageRestriction)
-            setLike(movie.like)
-            genres.text = movie.genres
+            ageRestriction.text = itemView.context.getString(R.string.age_restriction, movie.pgAge)
+            setLike(movie.isLiked)
+            genres.text = movie.genres.map { genre -> genre.name }.joinToString(prefix = "", postfix = "", separator = ", ")
             setRating(movie.rating)
             reviewsCount.text = itemView.context.getString(R.string.reviews_count, movie.reviewCount)
-            duration.text = itemView.context.getString(R.string.duration, movie.duration)
+            duration.text = itemView.context.getString(R.string.duration, movie.runningTime)
 
             itemView.setOnClickListener { movieClickListener.onMovieClicked(movie) }
         }
@@ -61,11 +60,10 @@ class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : andr
             else setColor(like, R.color.white_75)
         }
 
-        private fun setRating(rating: Double) {
-            val intRating = rating.roundToInt()
-            for (i in 0 until intRating)
+        private fun setRating(rating: Int) {
+            for (i in 0 until rating)
                 setColor(starList[i], R.color.radical_red)
-            for (i in intRating until 5)
+            for (i in rating until 5)
                 setColor(starList[i], R.color.storm_gray)
         }
 

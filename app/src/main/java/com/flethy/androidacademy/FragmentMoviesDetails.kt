@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flethy.androidacademy.data.models.Movie
-import kotlin.math.roundToInt
 
 class FragmentMoviesDetails : Fragment() {
 
-    private lateinit var adapter: ActorsAdapter
+    private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var movie: Movie
 
     private var movieTitle: AppCompatTextView? = null
@@ -26,6 +25,7 @@ class FragmentMoviesDetails : Fragment() {
     private var reviewsCount: AppCompatTextView? = null
     private var storyline: AppCompatTextView? = null
     private var starList: List<ImageView> = listOf()
+    private var rvActors: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +43,15 @@ class FragmentMoviesDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        findViews(view)
+
         view.findViewById<AppCompatTextView>(R.id.btn_back).setOnClickListener {
             fragmentManager?.popBackStack()
         }
 
-        val rvActors: RecyclerView = view.findViewById(R.id.rv_actors)
-        adapter = ActorsAdapter()
-        rvActors.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvActors.adapter = adapter
-        rvActors.setHasFixedSize(true)
+    }
 
+    private fun findViews(view: View) {
         movieTitle = view.findViewById(R.id.movie_title)
         movieLogo = view.findViewById(R.id.movie_logo)
         ageRestriction = view.findViewById(R.id.age_restriction)
@@ -66,7 +65,13 @@ class FragmentMoviesDetails : Fragment() {
             view.findViewById(R.id.star_4),
             view.findViewById(R.id.star_5)
         )
-
+        rvActors = view.findViewById(R.id.rv_actors)
+        actorsAdapter = ActorsAdapter()
+        rvActors?.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = actorsAdapter
+            setHasFixedSize(true)
+        }
     }
 
     override fun onStart() {
@@ -74,27 +79,42 @@ class FragmentMoviesDetails : Fragment() {
         updateData()
     }
 
+    override fun onDestroy() {
+        destroyViews()
+        super.onDestroy()
+    }
+
+    private fun destroyViews() {
+        movieTitle = null
+        movieLogo = null
+        ageRestriction = null
+        genres = null
+        reviewsCount = null
+        storyline = null
+        starList = listOf()
+        rvActors = null
+    }
+
     private fun updateData() {
-        adapter.submitList(movie.actors)
+        actorsAdapter.submitList(movie.actors)
 
         movieTitle?.text = movie.title
         movieLogo?.let {
             Glide.with(this)
-                .load(movie.logo)
+                .load(movie.detailImageUrl)
                 .into(it)
         }
-        ageRestriction?.text = getString(R.string.age_restriction, movie.ageRestriction)
-        genres?.text = movie.genres
+        ageRestriction?.text = getString(R.string.age_restriction, movie.pgAge)
+        genres?.text = movie.genres.map { genre -> genre.name }.joinToString(prefix = "", postfix = "", separator = ", ")
         reviewsCount?.text = getString(R.string.reviews_count, movie.reviewCount)
-        storyline?.text = movie.storyline
+        storyline?.text = movie.storyLine
         setRating(movie.rating)
     }
 
-    private fun setRating(rating: Double) {
-        val intRating = rating.roundToInt()
-        for (i in 0 until intRating)
+    private fun setRating(rating: Int) {
+        for (i in 0 until rating)
             setColor(starList[i], R.color.radical_red)
-        for (i in intRating until 5)
+        for (i in rating until 5)
             setColor(starList[i], R.color.storm_gray)
     }
 

@@ -3,14 +3,16 @@ package com.flethy.androidacademy.data.models
 import java.io.Serializable
 
 data class Movie(
+    val id: Int,
     val title: String,
-    val logo: String,
-    val ageRestriction: Int,
-    val like: Boolean,
-    val genres: String,
-    val rating: Double,
+    val storyLine: String,
+    val imageUrl: String,
+    val detailImageUrl: String,
+    val rating: Int,
     val reviewCount: Int,
-    val duration: Int,
-    val storyline: String,
-    val actors: List<Actor>
+    val pgAge: Int,
+    val runningTime: Int,
+    val genres: List<Genre>,
+    val actors: List<Actor>,
+    val isLiked: Boolean
 ) : Serializable
