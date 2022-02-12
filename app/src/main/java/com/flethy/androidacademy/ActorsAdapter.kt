@@ -32,7 +32,7 @@ class ActorsAdapter : ListAdapter<Actor, ActorsAdapter.ActorViewHolder>(ActorsCa
         fun onBind(actor: Actor) {
             name.text = actor.name
             Glide.with(itemView.context)
-                .load(actor.image)
+                .load(actor.imageUrl)
                 .into(image)
         }
     }

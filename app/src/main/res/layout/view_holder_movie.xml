@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/fragment_movies_list_movies_margin"
     android:background="@drawable/shape_movie_background_frame"
-    app:layout_constrainedWidth="true">
+    app:layout_constrainedWidth="true"
+    app:layout_constraintBottom_toBottomOf="@id/duration">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movie_logo"
@@ -18,7 +19,6 @@
         android:layout_marginEnd="@dimen/view_holder_movie_logo_margin"
         android:layout_marginBottom="@dimen/space_48"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@id/movie_frame"
         app:layout_constraintDimensionRatio="1:1.5"
         app:layout_constraintEnd_toEndOf="@id/movie_frame"
         app:layout_constraintStart_toStartOf="@id/movie_frame"
@@ -155,7 +155,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/view_holder_movie_logo_inner_margin"
-        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginTop="@dimen/space_4"
         android:layout_marginEnd="@dimen/view_holder_movie_logo_inner_margin"
         android:breakStrategy="balanced"
         app:layout_constraintBottom_toTopOf="@+id/duration"
@@ -171,9 +171,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/view_holder_movie_logo_inner_margin"
         android:layout_marginEnd="@dimen/view_holder_movie_logo_inner_margin"
-        android:layout_marginBottom="@dimen/view_holder_movie_logo_inner_margin"
+        android:paddingBottom="@dimen/view_holder_movie_logo_inner_margin"
         android:text="@string/duration"
-        app:layout_constraintBottom_toBottomOf="@id/movie_frame"
         app:layout_constraintEnd_toEndOf="@id/movie_frame"
         app:layout_constraintStart_toStartOf="@id/movie_frame"
         app:layout_constraintTop_toBottomOf="@id/movie_title"
