@@ -1,4 +1,4 @@
-package com.flethy.androidacademy
+package com.flethy.androidacademy.presentation.movieDetails.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.flethy.androidacademy.R
 import com.flethy.androidacademy.data.models.Actor
 import com.google.android.material.imageview.ShapeableImageView
 
