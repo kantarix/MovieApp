@@ -1,4 +1,4 @@
-package com.flethy.androidacademy
+package com.flethy.androidacademy.presentation.movies.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.flethy.androidacademy.R
 import com.flethy.androidacademy.data.models.Movie
 import com.google.android.material.imageview.ShapeableImageView
 
-class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : androidx.recyclerview.widget.ListAdapter<Movie, MoviesAdapter.MovieViewHolder>(MoviesCallback()) {
+class MoviesAdapter(private val onClickCard: (movie: Movie) -> Unit) : androidx.recyclerview.widget.ListAdapter<Movie, MoviesAdapter.MovieViewHolder>(MoviesCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -20,7 +21,7 @@ class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : andr
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.onBind(getItem(position), movieClickListener)
+        holder.onBind(getItem(position), onClickCard)
     }
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,7 +41,7 @@ class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : andr
             itemView.findViewById(R.id.star_5)
         )
 
-        fun onBind(movie: Movie, clickListener: OnMovieClickListener) {
+        fun onBind(movie: Movie, onClickCard: (movie: Movie) -> Unit) {
             title.text = movie.title
             Glide.with(itemView.context)
                 .load(movie.imageUrl)
@@ -52,7 +53,7 @@ class MoviesAdapter(private val movieClickListener: OnMovieClickListener) : andr
             reviewsCount.text = itemView.context.getString(R.string.reviews_count, movie.reviewCount)
             duration.text = itemView.context.getString(R.string.duration, movie.runningTime)
 
-            itemView.setOnClickListener { movieClickListener.onMovieClicked(movie) }
+            itemView.setOnClickListener { onClickCard(movie) }
         }
 
         private fun setLike(isLike: Boolean) {
@@ -81,8 +82,4 @@ class MoviesCallback : DiffUtil.ItemCallback<Movie>() {
 
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
         oldItem == newItem
-}
-
-interface OnMovieClickListener {
-    fun onMovieClicked(movie: Movie)
 }

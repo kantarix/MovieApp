@@ -1,9 +1,8 @@
-package com.flethy.androidacademy
+package com.flethy.androidacademy.presentation.movieDetails.view
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -11,9 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.flethy.androidacademy.R
 import com.flethy.androidacademy.data.models.Movie
 
-class FragmentMoviesDetails : Fragment() {
+class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
+
+    private var listener: MovieDetailsBackClickListener? = null
 
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var movie: Movie
@@ -26,32 +28,39 @@ class FragmentMoviesDetails : Fragment() {
     private var storyline: AppCompatTextView? = null
     private var starList: List<ImageView> = listOf()
     private var rvActors: RecyclerView? = null
+    private var btnBack: AppCompatTextView? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (context is MovieDetailsBackClickListener)
+            listener = context
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { movie = it.getSerializable(PARAM_MOVIE) as Movie }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_movies_details, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findViews(view)
-
-        view.findViewById<AppCompatTextView>(R.id.btn_back).setOnClickListener {
-            fragmentManager?.popBackStack()
-        }
-
+        initViews(view)
+        setUpListeners()
     }
 
-    private fun findViews(view: View) {
+    override fun onStart() {
+        super.onStart()
+        updateData()
+    }
+
+    override fun onDestroy() {
+        destroyViews()
+        super.onDestroy()
+    }
+
+    private fun initViews(view: View) {
+        btnBack = view.findViewById(R.id.btn_back)
         movieTitle = view.findViewById(R.id.movie_title)
         movieLogo = view.findViewById(R.id.movie_logo)
         ageRestriction = view.findViewById(R.id.age_restriction)
@@ -74,25 +83,10 @@ class FragmentMoviesDetails : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        updateData()
-    }
-
-    override fun onDestroy() {
-        destroyViews()
-        super.onDestroy()
-    }
-
-    private fun destroyViews() {
-        movieTitle = null
-        movieLogo = null
-        ageRestriction = null
-        genres = null
-        reviewsCount = null
-        storyline = null
-        starList = listOf()
-        rvActors = null
+    private fun setUpListeners() {
+        btnBack?.setOnClickListener {
+            fragmentManager?.popBackStack()
+        }
     }
 
     private fun updateData() {
@@ -122,8 +116,23 @@ class FragmentMoviesDetails : Fragment() {
         view.setColorFilter(ContextCompat.getColor(requireContext(), color))
     }
 
-    companion object {
+    private fun destroyViews() {
+        movieTitle = null
+        movieLogo = null
+        ageRestriction = null
+        genres = null
+        reviewsCount = null
+        storyline = null
+        starList = listOf()
+        rvActors = null
+        btnBack = null
+    }
 
+    interface MovieDetailsBackClickListener {
+        fun onMovieDeselected()
+    }
+
+    companion object {
         private const val PARAM_MOVIE = "movie"
 
         fun newInstance(movie: Movie): FragmentMoviesDetails {

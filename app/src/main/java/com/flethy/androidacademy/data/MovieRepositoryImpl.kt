@@ -4,17 +4,13 @@ import android.content.Context
 import com.flethy.androidacademy.data.models.Actor
 import com.flethy.androidacademy.data.models.Genre
 import com.flethy.androidacademy.data.models.Movie
+import com.flethy.androidacademy.domain.MovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-interface MovieRepository {
-    suspend fun loadMovies(): List<Movie>
-    suspend fun loadMovie(movieId: Int): Movie
-}
-
-internal class JsonMovieRepository(private val context: Context) : MovieRepository {
+internal class MovieRepositoryImpl(private val context: Context) : MovieRepository {
     private val jsonFormat = Json { ignoreUnknownKeys = true }
 
     private var movies: List<Movie>? = null
