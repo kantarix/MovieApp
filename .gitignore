@@ -1,3 +1,6 @@
+# Api key file
+apikey.properties
+
 # Built application files
 *.apk
 *.aar
