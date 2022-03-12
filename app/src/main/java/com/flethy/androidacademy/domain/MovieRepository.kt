@@ -1,8 +1,8 @@
 package com.flethy.androidacademy.domain
 
-import com.flethy.androidacademy.data.models.Movie
+import com.flethy.androidacademy.presentation.movies.viewmodel.MoviesResult
 
 interface MovieRepository {
-    suspend fun loadMovies(): List<Movie>
-    suspend fun loadMovie(movieId: Int): Movie
+    suspend fun loadMovies(): MoviesResult
+    suspend fun loadMovie(movieId: Int): MoviesResult
 }

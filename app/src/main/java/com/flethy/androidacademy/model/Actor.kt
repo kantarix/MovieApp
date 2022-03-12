@@ -1,9 +1,9 @@
-package com.flethy.androidacademy.data.models
+package com.flethy.androidacademy.model
 
 import java.io.Serializable
 
 data class Actor(
     val id: Int,
     val name: String,
-    val imageUrl: String
+    val imageUrl: String?
 ) : Serializable

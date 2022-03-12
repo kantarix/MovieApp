@@ -4,21 +4,34 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flethy.androidacademy.R
-import com.flethy.androidacademy.data.models.Movie
+import com.flethy.androidacademy.di.MovieRepositoryProvider
+import com.flethy.androidacademy.model.MovieDetails
+import com.flethy.androidacademy.presentation.movies.viewmodel.MoviesState
+import com.flethy.androidacademy.presentation.movies.viewmodel.MoviesViewModel
+import com.flethy.androidacademy.presentation.movies.viewmodel.MoviesViewModelFactory
+import kotlin.properties.Delegates
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
+
+    private val viewModel: MoviesViewModel by viewModels {
+        MoviesViewModelFactory((requireActivity() as MovieRepositoryProvider).provideMovieRepository())
+    }
 
     private var listener: MovieDetailsBackClickListener? = null
 
     private lateinit var actorsAdapter: ActorsAdapter
-    private lateinit var movie: Movie
+    private var movieId by Delegates.notNull<Int>()
 
     private var movieTitle: AppCompatTextView? = null
     private var movieLogo: ImageView? = null
@@ -29,6 +42,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     private var starList: List<ImageView> = listOf()
     private var rvActors: RecyclerView? = null
     private var btnBack: AppCompatTextView? = null
+    private var loader: ProgressBar? = null
+    private var castBlock: AppCompatTextView? = null
+    private var storylineBlock: AppCompatTextView? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,7 +55,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { movie = it.getSerializable(PARAM_MOVIE) as Movie }
+        arguments?.let { movieId = it.getInt(PARAM_MOVIE) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,11 +63,14 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
 
         initViews(view)
         setUpListeners()
+
+        viewModel.state.observe(this.viewLifecycleOwner, this::updateState)
+        viewModel.currentMovie.observe(this.viewLifecycleOwner, this::updateData)
     }
 
     override fun onStart() {
         super.onStart()
-        updateData()
+        viewModel.loadMovie(movieId)
     }
 
     override fun onDestroy() {
@@ -60,6 +79,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     }
 
     private fun initViews(view: View) {
+        loader = view.findViewById(R.id.loader)
+        castBlock = view.findViewById(R.id.cast_block_title)
+        storylineBlock = view.findViewById(R.id.storyline_block_title)
         btnBack = view.findViewById(R.id.btn_back)
         movieTitle = view.findViewById(R.id.movie_title)
         movieLogo = view.findViewById(R.id.movie_logo)
@@ -89,7 +111,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
         }
     }
 
-    private fun updateData() {
+    private fun updateData(movie: MovieDetails) {
         actorsAdapter.submitList(movie.actors)
 
         movieTitle?.text = movie.title
@@ -99,10 +121,31 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
                 .into(it)
         }
         ageRestriction?.text = getString(R.string.age_restriction, movie.pgAge)
-        genres?.text = movie.genres.map { genre -> genre.name }.joinToString(prefix = "", postfix = "", separator = ", ")
+        genres?.text = movie.genres?.map { genre -> genre.name }?.joinToString(prefix = "", postfix = "", separator = ", ")
         reviewsCount?.text = getString(R.string.reviews_count, movie.reviewCount)
         storyline?.text = movie.storyLine
         setRating(movie.rating)
+    }
+
+    private fun updateState(state: MoviesState) {
+        when (state) {
+            is MoviesState.Error -> {
+                loader?.isVisible = false
+                Toast.makeText(context, "${state.e.message}", Toast.LENGTH_LONG).show()
+            }
+            is MoviesState.Loading -> {
+                loader?.isVisible = true
+                starList.forEach { it.isVisible = false }
+                castBlock?.isVisible = false
+                storylineBlock?.isVisible = false
+            }
+            is MoviesState.Result -> {
+                loader?.isVisible = false
+                starList.forEach { it.isVisible = true }
+                castBlock?.isVisible = true
+                storylineBlock?.isVisible = true
+            }
+        }
     }
 
     private fun setRating(rating: Int) {
@@ -117,6 +160,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     }
 
     private fun destroyViews() {
+        storylineBlock = null
+        castBlock = null
+        loader = null
         movieTitle = null
         movieLogo = null
         ageRestriction = null
@@ -133,12 +179,12 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     }
 
     companion object {
-        private const val PARAM_MOVIE = "movie"
+        private const val PARAM_MOVIE = "MOVIE_ID"
 
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
+        fun newInstance(movieId: Int): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
             val args = Bundle()
-            args.putSerializable(PARAM_MOVIE, movie)
+            args.putInt(PARAM_MOVIE, movieId)
             fragment.arguments = args
             return fragment
         }

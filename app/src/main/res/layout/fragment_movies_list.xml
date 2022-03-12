@@ -44,4 +44,15 @@
         app:layout_constraintStart_toStartOf="@id/root_left_guideline"
         app:layout_constraintTop_toBottomOf="@id/movies_list_title" />
 
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="invisible"
+        android:indeterminateTint="@color/radical_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

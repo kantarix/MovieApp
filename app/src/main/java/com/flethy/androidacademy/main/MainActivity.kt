@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flethy.androidacademy.R
 import com.flethy.androidacademy.data.MovieRepositoryImpl
-import com.flethy.androidacademy.data.models.Movie
+import com.flethy.androidacademy.data.remote.retrofit.ImageUrlAppender
+import com.flethy.androidacademy.data.remote.retrofit.RetrofitDataSource
 import com.flethy.androidacademy.di.MovieRepositoryProvider
+import com.flethy.androidacademy.di.NetworkModule
+import com.flethy.androidacademy.di.NoConnectionInterceptor
 import com.flethy.androidacademy.domain.MovieRepository
 import com.flethy.androidacademy.presentation.movieDetails.view.FragmentMoviesDetails
 import com.flethy.androidacademy.presentation.movies.view.FragmentMoviesList
@@ -15,7 +18,9 @@ class MainActivity : AppCompatActivity(),
     FragmentMoviesList.MoviesListItemClickListener,
     FragmentMoviesDetails.MovieDetailsBackClickListener {
 
-    private val movieRepository = MovieRepositoryImpl(this)
+    private val networkModule = NetworkModule(NoConnectionInterceptor(this))
+    private val remoteDataSource = RetrofitDataSource(networkModule.api, ImageUrlAppender(networkModule.api))
+    private val movieRepository = MovieRepositoryImpl(remoteDataSource)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +31,8 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onMovieSelected(movie: Movie) {
-        routeToMovieDetails(movie)
+    override fun onMovieSelected(movieId: Int) {
+        routeToMovieDetails(movieId)
     }
 
     override fun onMovieDeselected() {
@@ -40,9 +45,9 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun routeToMovieDetails(movie: Movie) {
+    private fun routeToMovieDetails(movieId: Int) {
         supportFragmentManager.beginTransaction()
-            .add(R.id.persistent_container, FragmentMoviesDetails.newInstance(movie), "FragmentMovieDetails")
+            .add(R.id.persistent_container, FragmentMoviesDetails.newInstance(movieId), "FragmentMovieDetails")
             .addToBackStack(null)
             .commit()
     }

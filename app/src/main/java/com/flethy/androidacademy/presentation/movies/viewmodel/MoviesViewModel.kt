@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flethy.androidacademy.data.models.Movie
 import com.flethy.androidacademy.domain.MovieRepository
+import com.flethy.androidacademy.model.Movie
+import com.flethy.androidacademy.model.MovieDetails
 import kotlinx.coroutines.launch
 
 class MoviesViewModel(
@@ -15,10 +16,48 @@ class MoviesViewModel(
     private val _moviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> get() = _moviesList
 
+    private val _currentMovie = MutableLiveData<MovieDetails>()
+    val currentMovie: LiveData<MovieDetails> get() = _currentMovie
+
+    private val _state = MutableLiveData<MoviesState>(MoviesState.Result())
+    val state: LiveData<MoviesState> get() = _state
+
     fun updateMovies() {
         viewModelScope.launch {
-            val newMovies = movieRepo.loadMovies()
-            _moviesList.postValue(newMovies)
+
+            _state.postValue(MoviesState.Loading())
+
+            when (val result = movieRepo.loadMovies()) {
+                is MoviesResult.ValidResultMoviesList -> {
+                    _moviesList.postValue(result.moviesList)
+                    _state.postValue(MoviesState.Result())
+                }
+                is MoviesResult.ErrorResult -> {
+                    _state.postValue(MoviesState.Error(result.e))
+                    _moviesList.postValue(emptyList())
+                }
+                else -> {}
+            }
+
+        }
+    }
+
+    fun loadMovie(movieId: Int) {
+        viewModelScope.launch {
+
+            _state.postValue(MoviesState.Loading())
+
+            when (val result = movieRepo.loadMovie(movieId)) {
+                is MoviesResult.ValidResultMovie -> {
+                    _currentMovie.postValue(result.movie)
+                    _state.postValue(MoviesState.Result())
+                }
+                is MoviesResult.ErrorResult -> {
+                    _state.postValue(MoviesState.Error(result.e))
+                }
+                else -> {}
+            }
+
         }
     }
 

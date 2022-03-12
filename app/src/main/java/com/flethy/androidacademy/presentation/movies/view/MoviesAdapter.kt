@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flethy.androidacademy.R
-import com.flethy.androidacademy.data.models.Movie
+import com.flethy.androidacademy.model.Movie
 import com.google.android.material.imageview.ShapeableImageView
 
 class MoviesAdapter(private val onClickCard: (movie: Movie) -> Unit) : androidx.recyclerview.widget.ListAdapter<Movie, MoviesAdapter.MovieViewHolder>(MoviesCallback()) {
@@ -48,7 +48,7 @@ class MoviesAdapter(private val onClickCard: (movie: Movie) -> Unit) : androidx.
                 .into(logo)
             ageRestriction.text = itemView.context.getString(R.string.age_restriction, movie.pgAge)
             setLike(movie.isLiked)
-            genres.text = movie.genres.map { genre -> genre.name }.joinToString(prefix = "", postfix = "", separator = ", ")
+            genres.text = movie.genres?.map { genre -> genre.name }?.joinToString(prefix = "", postfix = "", separator = ", ")
             setRating(movie.rating)
             reviewsCount.text = itemView.context.getString(R.string.reviews_count, movie.reviewCount)
             duration.text = itemView.context.getString(R.string.duration, movie.runningTime)
