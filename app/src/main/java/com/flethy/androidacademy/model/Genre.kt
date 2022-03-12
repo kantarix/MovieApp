@@ -1,4 +1,4 @@
-package com.flethy.androidacademy.data.models
+package com.flethy.androidacademy.model
 
 import java.io.Serializable
 
