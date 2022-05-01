@@ -13,7 +13,9 @@ class NoConnectionInterceptor(private val context: Context): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return if (!isConnectionOn()) {
-            throw NoConnectivityException()
+            //NoConnectivityException appears with VPN
+            //throw NoConnectivityException()
+            chain.proceed(chain.request())
         } else if(!isInternetAvailable()) {
             throw NoInternetException()
         } else {
