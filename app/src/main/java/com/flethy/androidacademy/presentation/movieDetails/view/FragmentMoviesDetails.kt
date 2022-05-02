@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.flethy.androidacademy.R
 import com.flethy.androidacademy.di.MovieRepositoryProvider
@@ -45,6 +46,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     private var loader: ProgressBar? = null
     private var castBlock: AppCompatTextView? = null
     private var storylineBlock: AppCompatTextView? = null
+    private var swipeRefresh: SwipeRefreshLayout? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -89,6 +91,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
         genres = view.findViewById(R.id.genres)
         reviewsCount = view.findViewById(R.id.reviews_count)
         storyline = view.findViewById(R.id.movie_storyline)
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
         starList = listOf(
             view.findViewById(R.id.star_1),
             view.findViewById(R.id.star_2),
@@ -108,6 +111,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     private fun setUpListeners() {
         btnBack?.setOnClickListener {
             fragmentManager?.popBackStack()
+        }
+        swipeRefresh?.setOnRefreshListener {
+            viewModel.updateMovie(movieId)
         }
     }
 
@@ -134,12 +140,15 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
                 Toast.makeText(context, "${state.e.message}", Toast.LENGTH_LONG).show()
             }
             is MoviesState.Loading -> {
-                loader?.isVisible = true
-                starList.forEach { it.isVisible = false }
-                castBlock?.isVisible = false
-                storylineBlock?.isVisible = false
+                if (swipeRefresh?.isRefreshing == false) {
+                    loader?.isVisible = true
+                    starList.forEach { it.isVisible = false }
+                    castBlock?.isVisible = false
+                    storylineBlock?.isVisible = false
+                }
             }
             is MoviesState.Result -> {
+                swipeRefresh?.isRefreshing = false
                 loader?.isVisible = false
                 starList.forEach { it.isVisible = true }
                 castBlock?.isVisible = true
