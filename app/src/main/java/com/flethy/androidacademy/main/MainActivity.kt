@@ -2,8 +2,10 @@ package com.flethy.androidacademy.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.flethy.androidacademy.MovieApp.Companion.db
 import com.flethy.androidacademy.R
 import com.flethy.androidacademy.data.MovieRepositoryImpl
+import com.flethy.androidacademy.data.local.room.RoomDataSource
 import com.flethy.androidacademy.data.remote.retrofit.ImageUrlAppender
 import com.flethy.androidacademy.data.remote.retrofit.RetrofitDataSource
 import com.flethy.androidacademy.di.MovieRepositoryProvider
@@ -20,7 +22,8 @@ class MainActivity : AppCompatActivity(),
 
     private val networkModule = NetworkModule(NoConnectionInterceptor(this))
     private val remoteDataSource = RetrofitDataSource(networkModule.api, ImageUrlAppender(networkModule.api))
-    private val movieRepository = MovieRepositoryImpl(remoteDataSource)
+    private val localDataSource = RoomDataSource(db)
+    private val movieRepository = MovieRepositoryImpl(localDataSource, remoteDataSource)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

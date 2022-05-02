@@ -1,7 +1,10 @@
 package com.flethy.androidacademy.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
+@Parcelize
 data class Movie(
     val id: Int,
     val title: String,
@@ -12,4 +15,4 @@ data class Movie(
     val runningTime: Int,
     val genres: List<Genre>? = emptyList(),
     val isLiked: Boolean
-) : Serializable
+) : Parcelable

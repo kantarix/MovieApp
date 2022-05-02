@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.flethy.androidacademy.R
 import com.flethy.androidacademy.di.MovieRepositoryProvider
 import com.flethy.androidacademy.model.Movie
@@ -27,6 +28,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
 
     var loader: ProgressBar? = null
     var rvMovies: RecyclerView? = null
+    private var swipeRefresh: SwipeRefreshLayout? = null
     private lateinit var moviesAdapter: MoviesAdapter
 
     override fun onAttach(context: Context) {
@@ -40,15 +42,18 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
+        setUpListeners()
         setUpMoviesAdapter()
 
         viewModel.state.observe(this.viewLifecycleOwner, this::updateState)
         viewModel.moviesList.observe(this.viewLifecycleOwner, this::updateData)
-    }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.updateMovies()
+        if (savedInstanceState == null) {
+            viewModel.loadMovies()
+        } else {
+            updateData(savedInstanceState.getParcelableArrayList<Movie>(KEY_MOVIES) as List<Movie>)
+        }
+
     }
 
     override fun onDestroy() {
@@ -56,9 +61,21 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
         super.onDestroy()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(KEY_MOVIES, ArrayList<Movie>(moviesAdapter.currentList))
+    }
+
     private fun initViews(view: View) {
         loader = view.findViewById(R.id.loader)
         rvMovies = view.findViewById(R.id.rv_movies_list)
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
+    }
+
+    private fun setUpListeners() {
+        swipeRefresh?.setOnRefreshListener {
+            viewModel.updateMovies()
+        }
     }
 
     private fun setUpMoviesAdapter() {
@@ -88,8 +105,14 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
                 loader?.isVisible = false
                 Toast.makeText(context, "${state.e.message}", Toast.LENGTH_LONG).show()
             }
-            is MoviesState.Loading -> loader?.isVisible = true
-            is MoviesState.Result -> loader?.isVisible = false
+            is MoviesState.Loading -> {
+                if (swipeRefresh?.isRefreshing == false)
+                    loader?.isVisible = true
+            }
+            is MoviesState.Result -> {
+                loader?.isVisible = false
+                swipeRefresh?.isRefreshing = false
+            }
         }
     }
 
@@ -98,6 +121,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
     }
 
     companion object {
+        private const val KEY_MOVIES = "KEY_MOVIES"
         fun newInstance() = FragmentMoviesList()
     }
 

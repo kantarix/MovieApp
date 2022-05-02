@@ -1,8 +1,10 @@
 package com.flethy.androidacademy.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Genre (
     val id: Int,
     val name: String
-    ) : Serializable
+    ) : Parcelable

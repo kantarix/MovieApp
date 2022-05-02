@@ -1,5 +1,9 @@
 package com.flethy.androidacademy.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class MovieDetails(
     val id: Int,
     val title: String,
@@ -10,4 +14,4 @@ data class MovieDetails(
     val pgAge: Int,
     val genres: List<Genre>? = emptyList(),
     val actors: List<Actor>? = emptyList(),
-)
+) : Parcelable

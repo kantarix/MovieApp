@@ -22,7 +22,7 @@ class MoviesViewModel(
     private val _state = MutableLiveData<MoviesState>(MoviesState.Result())
     val state: LiveData<MoviesState> get() = _state
 
-    fun updateMovies() {
+    fun loadMovies() {
         viewModelScope.launch {
 
             _state.postValue(MoviesState.Loading())
@@ -58,6 +58,40 @@ class MoviesViewModel(
                 else -> {}
             }
 
+        }
+    }
+
+    fun updateMovies() {
+
+        _state.postValue(MoviesState.Loading())
+
+        viewModelScope.launch {
+            when (val result = movieRepo.updateMovies()) {
+                is MoviesResult.ValidResultMoviesList -> {
+                    _moviesList.postValue(result.moviesList)
+                    _state.postValue(MoviesState.Result())
+                }
+                else -> {
+                    _state.postValue(MoviesState.Result())
+                }
+            }
+        }
+    }
+
+    fun updateMovie(movieId: Int) {
+
+        _state.postValue(MoviesState.Loading())
+
+        viewModelScope.launch {
+            when (val result = movieRepo.updateMovie(movieId)) {
+                is MoviesResult.ValidResultMovie -> {
+                    _currentMovie.postValue(result.movie)
+                    _state.postValue(MoviesState.Result())
+                }
+                else -> {
+                    _state.postValue(MoviesState.Result())
+                }
+            }
         }
     }
 
