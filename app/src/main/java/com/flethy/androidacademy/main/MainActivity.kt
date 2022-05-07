@@ -2,8 +2,10 @@ package com.flethy.androidacademy.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.WorkManager
 import com.flethy.androidacademy.MovieApp.Companion.db
 import com.flethy.androidacademy.R
+import com.flethy.androidacademy.background.WorkRepository
 import com.flethy.androidacademy.data.MovieRepositoryImpl
 import com.flethy.androidacademy.data.local.room.RoomDataSource
 import com.flethy.androidacademy.data.remote.retrofit.ImageUrlAppender
@@ -32,6 +34,9 @@ class MainActivity : AppCompatActivity(),
         if (savedInstanceState == null) {
             routeToMoviesList()
         }
+
+        val workRepository = WorkRepository()
+        WorkManager.getInstance(this).enqueue(workRepository.preloadRequest)
     }
 
     override fun onMovieSelected(movieId: Int) {

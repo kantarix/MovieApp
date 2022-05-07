@@ -51,7 +51,15 @@ internal class MovieRepositoryImpl(
     override suspend fun updateMovies(): MoviesResult {
         return withContext(Dispatchers.IO) {
             try {
+                val oldMovies = localDataSource.loadMovies()
                 val movies = remoteDataSource.loadMovies()
+
+                for (movie in oldMovies) {
+                    if (!movies.contains(movie)) {
+                        localDataSource.deleteMovie(movieId = movie.id)
+                    }
+                }
+
                 localDataSource.insertMovies(movies)
                 MoviesResult.ValidResultMoviesList(movies)
             } catch (e: Throwable) {

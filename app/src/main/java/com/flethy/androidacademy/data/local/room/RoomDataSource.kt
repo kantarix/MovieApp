@@ -69,6 +69,10 @@ class RoomDataSource(private val db: AppRoomDatabase) : LocalDataSource {
         )
     }
 
+    override suspend fun deleteMovie(movieId: Int) {
+        db.getMovieDao().deleteMovie(movieId)
+    }
+
     override suspend fun insertMovie(movieFromNetwork: MovieDetails) {
         val movieDetails = MovieDetailsDb(
             movieId = movieFromNetwork.id,

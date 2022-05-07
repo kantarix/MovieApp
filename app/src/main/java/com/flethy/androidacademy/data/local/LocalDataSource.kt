@@ -11,6 +11,8 @@ interface LocalDataSource {
 
     suspend fun loadMovie(movieId: Int): MovieDetails
 
+    suspend fun deleteMovie(movieId: Int)
+
     suspend fun insertMovie(movieFromNetwork: MovieDetails)
 
     suspend fun exists(movieId: Int): Boolean
