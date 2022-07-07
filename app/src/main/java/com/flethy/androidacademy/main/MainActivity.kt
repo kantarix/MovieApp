@@ -69,15 +69,6 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun openMovie(movieId: Int) {
-        Log.d("movie_id", "openMovie")
-        supportFragmentManager.popBackStack(FRAGMENT_MOVIE_DETAILS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.persistent_container, FragmentMoviesDetails.newInstance(movieId), "FragmentMovieDetails")
-            .addToBackStack(null)
-            .commit()
-    }
-
     override fun onMovieSelected(movieId: Int) {
         routeToMovieDetails(movieId)
     }
