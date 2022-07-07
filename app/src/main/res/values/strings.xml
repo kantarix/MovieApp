@@ -3,6 +3,9 @@
 
     <string name="back">Back</string>
 
+    <string name="channel_new_movies">New movies</string>
+    <string name="movie_notification_description">Rating %d/5</string>
+
     <!--  fragment_movies_details  -->
     <string name="storyline">Storyline</string>
     <string name="cast">Cast</string>
